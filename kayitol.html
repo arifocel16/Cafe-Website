@@ -1,0 +1,1449 @@
+<!DOCTYPE html>
+<html lang="tr" data-bs-theme="dark">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Butik Kafe - Yeni Üye Kaydı">
+  <title>Butik Kafe · Kayıt Ol</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>☕</text></svg>">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <style>
+    :root {
+      --cafe-primary: #c59b6d;
+      --cafe-hover: #a88158;
+    }
+
+    body {
+      min-height: 100vh;
+      padding-top: 3.5rem;
+      display: flex;
+      flex-direction: column;
+      color: #fff;
+      background: linear-gradient(rgba(15, 15, 18, 0.86), rgba(15, 15, 18, 0.95)),
+        url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=1920&auto=format&fit=crop') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        background-attachment: scroll;
+      }
+    }
+
+    .cafe-feedback {
+      border-radius: 10px;
+      padding: 0.6rem 0.85rem;
+      font-size: 0.83rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+      transition: all 0.25s ease;
+    }
+
+    .cafe-feedback.is-warning {
+      background-color: rgba(255, 193, 7, 0.12);
+      border: 1px solid rgba(255, 193, 7, 0.45);
+      color: #ffda6a;
+    }
+
+    .cafe-feedback.is-danger {
+      background-color: rgba(220, 53, 69, 0.14);
+      border: 1px solid rgba(220, 53, 69, 0.45);
+      color: #ea868f;
+    }
+
+    .cafe-feedback.is-success {
+      background-color: rgba(25, 135, 84, 0.16);
+      border: 1px solid rgba(25, 135, 84, 0.5);
+      color: #75b798;
+    }
+
+    .cafe-feedback.is-info {
+      background-color: rgba(197, 155, 109, 0.14);
+      border: 1px solid rgba(197, 155, 109, 0.45);
+      color: #e2c5a3;
+    }
+
+    .cart-badge-count {
+      display: none;
+      background-color: var(--cafe-primary);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      min-width: 1.35rem;
+      height: 1.35rem;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+    }
+
+    .btn-remove-cart {
+      background-color: rgba(220, 53, 69, 0.14);
+      border: 1px solid rgba(220, 53, 69, 0.45);
+      color: #ea868f;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-remove-cart:hover {
+      background-color: #dc3545;
+      border-color: #dc3545;
+      color: #fff;
+    }
+
+    .btn-qty-cart {
+      background-color: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: #fff;
+      width: 26px;
+      height: 26px;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      transition: all 0.2s ease;
+    }
+
+    .btn-qty-cart:hover {
+      background-color: var(--cafe-primary);
+      border-color: var(--cafe-primary);
+      color: #fff;
+    }
+
+    .btn-primary {
+      background-color: var(--cafe-primary);
+      border-color: var(--cafe-primary);
+      color: #fff;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover,
+    .btn-primary:focus,
+    .btn-primary:active {
+      background-color: var(--cafe-hover) !important;
+      border-color: var(--cafe-hover) !important;
+      color: #fff !important;
+      box-shadow: 0 0 0 0.25rem rgba(197, 155, 109, 0.4) !important;
+    }
+
+    .btn-outline-cafe {
+      border: 1px solid var(--cafe-primary);
+      color: var(--cafe-primary);
+      background: transparent;
+      transition: all 0.25s ease;
+    }
+
+    .btn-outline-cafe:hover {
+      background-color: var(--cafe-primary);
+      border-color: var(--cafe-primary);
+      color: #fff;
+    }
+
+    .btn-wheel {
+      background-color: rgba(197, 155, 109, 0.16);
+      border: 1px solid rgba(197, 155, 109, 0.55);
+      color: var(--cafe-primary);
+      transition: all 0.3s ease;
+    }
+
+    .btn-wheel:hover {
+      background-color: var(--cafe-primary);
+      border-color: var(--cafe-primary);
+      color: #fff;
+      box-shadow: 0 0 15px rgba(197, 155, 109, 0.45);
+    }
+
+    .auth-wrapper {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2.5rem 1rem;
+    }
+
+    .auth-card {
+      width: 100%;
+      max-width: 480px;
+      background-color: rgba(24, 27, 32, 0.94);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 2.5rem 2rem;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(8px);
+    }
+
+    .brand-icon-circle {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background-color: rgba(197, 155, 109, 0.15);
+      border: 1px solid rgba(197, 155, 109, 0.45);
+      color: var(--cafe-primary);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.65rem;
+    }
+
+    .form-control:focus {
+      border-color: var(--cafe-primary);
+      box-shadow: 0 0 0 0.25rem rgba(197, 155, 109, 0.28);
+    }
+
+    .form-check-input:checked {
+      background-color: var(--cafe-primary);
+      border-color: var(--cafe-primary);
+    }
+
+    .form-check-input:focus {
+      box-shadow: 0 0 0 0.2rem rgba(197, 155, 109, 0.25);
+    }
+
+    .auth-link {
+      color: var(--cafe-primary);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    .auth-link:hover {
+      color: #e0b889;
+      text-decoration: underline;
+    }
+
+    .perk-strip {
+      background-color: rgba(197, 155, 109, 0.12);
+      border: 1px dashed rgba(197, 155, 109, 0.45);
+      border-radius: 12px;
+      padding: 0.75rem 1rem;
+      font-size: 0.82rem;
+      color: #e3c8a8;
+    }
+
+    .wheel-stage {
+      position: relative;
+      width: 280px;
+      height: 280px;
+      margin: 0 auto;
+    }
+
+    .wheel-pointer {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 14px solid transparent;
+      border-right: 14px solid transparent;
+      border-top: 24px solid #fff;
+      filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.85));
+      z-index: 10;
+    }
+
+    .wheel-disc {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 6px solid var(--cafe-primary);
+      box-shadow: 0 0 0 4px rgba(197, 155, 109, 0.25), 0 14px 35px rgba(0, 0, 0, 0.75);
+      position: relative;
+      overflow: hidden;
+      transform: rotate(0deg);
+      transition: transform 3.5s cubic-bezier(0.15, 0.88, 0.25, 1);
+      background:
+        repeating-conic-gradient(
+          from -30deg,
+          rgba(255, 255, 255, 0.14) 0deg 1deg,
+          transparent 1deg 60deg
+        ),
+        conic-gradient(
+          from -30deg,
+          #8c663e 0deg 60deg,
+          #26292e 60deg 120deg,
+          #b08556 120deg 180deg,
+          #1f2227 180deg 240deg,
+          #755331 240deg 300deg,
+          #2b2520 300deg 360deg
+        );
+    }
+
+    .wheel-center-cap {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background-color: #16181c;
+      border: 3px solid var(--cafe-primary);
+      color: var(--cafe-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.35rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.75);
+      z-index: 5;
+    }
+
+    .wheel-label {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 92px;
+      transform-origin: 0 50%;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #fff;
+      text-align: center;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.95);
+      pointer-events: none;
+      line-height: 1.2;
+    }
+
+    .wheel-label.slice-1 { transform: translateY(-50%) rotate(-90deg) translateX(36px); }
+    .wheel-label.slice-2 { transform: translateY(-50%) rotate(-30deg) translateX(36px); }
+    .wheel-label.slice-3 { transform: translateY(-50%) rotate(30deg) translateX(36px); }
+    .wheel-label.slice-4 { transform: translateY(-50%) rotate(90deg) translateX(36px); }
+    .wheel-label.slice-5 { transform: translateY(-50%) rotate(150deg) translateX(36px); }
+    .wheel-label.slice-6 { transform: translateY(-50%) rotate(210deg) translateX(36px); }
+
+    .coupon-box {
+      background-color: rgba(197, 155, 109, 0.14);
+      border: 1px dashed var(--cafe-primary);
+      border-radius: 12px;
+      padding: 1rem;
+      min-height: 126px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    @keyframes prizePopIn {
+      0% { opacity: 0; transform: scale(0.92); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    .prize-reveal-anim {
+      animation: prizePopIn 0.35s ease forwards;
+    }
+
+    .order-receipt-card {
+      background-color: #16181d;
+      border: 1px solid rgba(197, 155, 109, 0.35);
+      border-radius: 14px;
+      padding: 1rem 1.1rem;
+      text-align: left;
+      font-size: 0.82rem;
+    }
+
+    .receipt-dashed-divider {
+      border-top: 1px dashed rgba(255, 255, 255, 0.18);
+      margin: 0.65rem 0;
+    }
+
+    .footer-link {
+      color: rgba(255, 255, 255, 0.6);
+      text-decoration: none;
+      transition: color 0.25s ease;
+    }
+
+    .footer-link:hover {
+      color: var(--cafe-primary);
+    }
+  </style>
+</head>
+
+<body>
+
+  <header data-bs-theme="dark">
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark border-bottom border-secondary">
+      <div class="container-fluid">
+        <a class="navbar-brand fw-bold" href="index.html" style="color: var(--cafe-primary);">Butik Kafe</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+          aria-controls="navbarCollapse" aria-expanded="false" aria-label="Menüyü Aç">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav me-auto mb-2 mb-md-0">
+            <li class="nav-item"> <a class="nav-link" href="index.html">Ana Sayfa</a> </li>
+            <li class="nav-item"> <a class="nav-link" href="menu.html">Menü</a> </li>
+            <li class="nav-item"> <a class="nav-link" href="index.html#hakkimizda">Hakkımızda</a> </li>
+          </ul>
+          <button type="button" class="btn btn-wheel me-2 mb-2 mb-md-0" data-bs-toggle="modal" data-bs-target="#coffeeWheelModal">
+            <i class="bi bi-stars me-1"></i>Şansını Dene
+          </button>
+          <form class="d-flex me-2 mb-2 mb-md-0" role="search" action="menu.html" method="get">
+            <input class="form-control me-2 bg-dark text-white border-secondary" type="search" name="q" placeholder="Menüde ara..."
+              aria-label="Ara">
+            <button class="btn btn-outline-light" type="submit">Ara</button>
+          </form>
+          <button type="button" class="btn btn-outline-light position-relative me-2 mb-2 mb-md-0"
+            data-bs-toggle="offcanvas" data-bs-target="#cafeCartOffcanvas" aria-controls="cafeCartOffcanvas">
+            <i class="bi bi-bag me-1" style="color: var(--cafe-primary);"></i>Sepetim
+            <span id="cartBadgeCount" class="cart-badge-count position-absolute top-0 start-100 translate-middle badge rounded-pill">0</span>
+          </button>
+          <div id="navAuthArea">
+            <a href="giris.html" id="navLoginLink" class="btn btn-primary me-2">Giriş Yap</a>
+            <a href="kayitol.html" class="btn btn-outline-light active" aria-current="page">Kayıt Ol</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="auth-wrapper">
+    <div class="auth-card">
+      <div class="text-center mb-4">
+        <div class="brand-icon-circle mb-3">
+          <i class="bi bi-person-plus-fill"></i>
+        </div>
+        <h1 class="h3 fw-normal text-white mb-1">Butik Kafe Ailesine Katılın</h1>
+        <p class="text-white-50 small mb-0">Hemen üye olun, kahve çarkı ödüllerinizi ve masa siparişlerinizi kolayca yönetin.</p>
+      </div>
+
+      <div id="alreadyLoggedInBox" class="d-none mb-3"></div>
+
+      <div class="perk-strip d-flex align-items-center mb-4">
+        <i class="bi bi-gift-fill fs-5 me-2" style="color: var(--cafe-primary);"></i>
+        <span>Üyelere özel her ziyarette <strong>Sürpriz Kahve Çarkı</strong> ve hızlı sipariş avantajı!</span>
+      </div>
+
+      <form id="registerForm" novalidate>
+        <div class="row g-2 mb-3">
+          <div class="col-sm-6">
+            <div class="form-floating">
+              <input type="text" class="form-control bg-dark text-white border-secondary" id="regFirstName"
+                name="firstName" placeholder="Adınız" required>
+              <label for="regFirstName" class="text-white-50">Adınız</label>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-floating">
+              <input type="text" class="form-control bg-dark text-white border-secondary" id="regLastName"
+                name="lastName" placeholder="Soyadınız" required>
+              <label for="regLastName" class="text-white-50">Soyadınız</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-floating mb-3">
+          <input type="email" class="form-control bg-dark text-white border-secondary" id="regEmail"
+            name="email" placeholder="ornek@eposta.com" required>
+          <label for="regEmail" class="text-white-50">E-posta Adresi</label>
+        </div>
+
+        <div class="form-floating mb-3">
+          <input type="tel" class="form-control bg-dark text-white border-secondary" id="regPhone"
+            name="phone" placeholder="05XX XXX XX XX" required>
+          <label for="regPhone" class="text-white-50">Telefon Numarası</label>
+        </div>
+
+        <div class="input-group mb-3">
+          <div class="form-floating flex-grow-1">
+            <input type="password" class="form-control bg-dark text-white border-secondary" id="regPassword"
+              name="password" placeholder="Şifre Oluşturun" minlength="6" required
+              style="border-top-right-radius: 0; border-bottom-right-radius: 0;">
+            <label for="regPassword" class="text-white-50">Şifre (En az 6 karakter)</label>
+          </div>
+          <button class="btn btn-outline-secondary border-secondary px-3" type="button" id="toggleRegPass" aria-label="Şifreyi Göster">
+            <i class="bi bi-eye"></i>
+          </button>
+        </div>
+
+        <div class="form-floating mb-3">
+          <input type="password" class="form-control bg-dark text-white border-secondary" id="regPasswordConfirm"
+            name="passwordConfirm" placeholder="Şifreyi Onaylayın" minlength="6" required>
+          <label for="regPasswordConfirm" class="text-white-50">Şifre Tekrar</label>
+        </div>
+
+        <div class="form-check mb-3">
+          <input class="form-check-input bg-dark border-secondary" type="checkbox" id="termsCheck" required>
+          <label class="form-check-label small text-white-50" for="termsCheck">
+            <a href="#" class="auth-link" data-bs-toggle="modal" data-bs-target="#legalInfoModal" data-legal-type="terms">Üyelik koşullarını</a> ve
+            <a href="#" class="auth-link" data-bs-toggle="modal" data-bs-target="#legalInfoModal" data-legal-type="privacy">gizlilik politikasını</a> okudum, kabul ediyorum.
+          </label>
+        </div>
+
+        <div id="registerFeedback" class="d-none mb-3"></div>
+
+        <button class="btn btn-primary w-100 py-2 fw-medium mb-3" type="submit">
+          <i class="bi bi-check2-circle me-1"></i>Üyeliği Tamamla
+        </button>
+
+        <div class="text-center">
+          <span class="text-white-50 small">Zaten hesabınız var mı?</span>
+          <a href="giris.html" id="toLoginLink" class="auth-link small ms-1">Giriş Yapın</a>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <footer class="container py-3 border-top border-secondary border-opacity-25">
+    <div class="row align-items-center gy-2">
+      <div class="col-md-6 text-center text-md-start">
+        <p class="text-white-50 small mb-0">
+          &copy; 2026 Butik Kafe İşletmesi &middot;
+          <a href="#" class="footer-link" data-bs-toggle="modal" data-bs-target="#legalInfoModal" data-legal-type="privacy">Gizlilik</a> &middot;
+          <a href="#" class="footer-link" data-bs-toggle="modal" data-bs-target="#legalInfoModal" data-legal-type="terms">Şartlar</a>
+        </p>
+      </div>
+      <div class="col-md-6 text-center text-md-end">
+        <a href="index.html" class="footer-link small">Ana Sayfaya Dön</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Gizlilik & Kullanım Şartları Modalı -->
+  <div class="modal fade" id="legalInfoModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content bg-dark text-white border-secondary" style="border-radius: 18px;">
+        <div class="modal-header border-secondary">
+          <h5 class="modal-title fw-normal" id="legalModalTitle" style="color: var(--cafe-primary);">Bilgilendirme</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Kapat"></button>
+        </div>
+        <div class="modal-body small text-white-50" id="legalModalBody"></div>
+        <div class="modal-footer border-secondary">
+          <button type="button" class="btn btn-primary btn-sm px-4" data-bs-dismiss="modal">Anladım</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Rastgele Ödüllü Sürpriz Kahve Çarkı Modalı -->
+  <div class="modal fade" id="coffeeWheelModal" tabindex="-1" aria-labelledby="coffeeWheelModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content bg-dark text-white border-secondary" style="border-radius: 20px;">
+        <div class="modal-header border-secondary">
+          <h5 class="modal-title fw-normal" id="coffeeWheelModalLabel">
+            <i class="bi bi-stars me-2" style="color: var(--cafe-primary);"></i>Günün Sürpriz Kahve Çarkı
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Kapat"></button>
+        </div>
+        <div class="modal-body text-center py-4">
+          <p class="text-white-50 small mb-4">Her ziyarette çarkı <strong>1 kez</strong> çevirebilirsin. 6 farklı hediyeden biri şansına göre senin!</p>
+
+          <div class="wheel-stage mb-3">
+            <div class="wheel-pointer"></div>
+            <div class="wheel-disc" id="coffeeWheelDisc">
+              <div class="wheel-label slice-1">Tatlıda<br>%15 İndirim</div>
+              <div class="wheel-label slice-2">Ücretsiz<br>Ekstra Shot</div>
+              <div class="wheel-label slice-3">Kurabiye<br>İkramı</div>
+              <div class="wheel-label slice-4">Kahvede<br>%20 İndirim</div>
+              <div class="wheel-label slice-5">Çaylarda<br>%25 İndirim</div>
+              <div class="wheel-label slice-6">Ücretsiz<br>Şurup</div>
+            </div>
+            <div class="wheel-center-cap">
+              <i class="bi bi-cup-hot-fill"></i>
+            </div>
+          </div>
+
+          <button type="button" id="spinWheelBtn" class="btn btn-primary px-4 py-2 mb-3">
+            <i class="bi bi-arrow-repeat me-1"></i>Çarkı Çevir
+          </button>
+
+          <div class="coupon-box mt-2" id="wheelCouponBox">
+            <div class="text-white-50 small">
+              <i class="bi bi-gift fs-4 d-block mb-1" style="color: var(--cafe-primary);"></i>
+              Kupon kodunu görmek için yukarıdaki <strong>Çarkı Çevir</strong> butonuna bas!
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sepetim Yan Çekmecesi -->
+  <div class="offcanvas offcanvas-end bg-dark text-white border-start border-secondary" tabindex="-1" id="cafeCartOffcanvas" aria-labelledby="cafeCartOffcanvasLabel">
+    <div class="offcanvas-header border-bottom border-secondary">
+      <h5 class="offcanvas-title fw-normal" id="cafeCartOffcanvasLabel">
+        <i class="bi bi-bag-heart me-2" style="color: var(--cafe-primary);"></i>Sipariş Sepetim
+      </h5>
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Kapat"></button>
+    </div>
+    <div class="offcanvas-body d-flex flex-column justify-content-between">
+      <div id="cartItemsContainer">
+        <div id="cartEmptyMsg" class="text-center py-5 text-white-50">
+          <i class="bi bi-bag-x fs-1 d-block mb-2" style="color: var(--cafe-primary);"></i>
+          <p class="small mb-3">Sepetiniz şu an boş.</p>
+          <a href="menu.html" class="btn btn-sm btn-outline-light">Menüye Göz At</a>
+        </div>
+      </div>
+
+      <form class="border-top border-secondary pt-3 mt-3" onsubmit="return false;">
+        <div id="cartSubtotalRow" class="d-none justify-content-between align-items-center mb-1 small text-white-50">
+          <span>Ara Toplam:</span>
+          <span id="cartSubtotalAmount">0 ₺</span>
+        </div>
+
+        <div id="cartDiscountRow" class="d-none justify-content-between align-items-center mb-2 small text-success">
+          <span id="cartDiscountLabel">Kupon Avantajı:</span>
+          <span id="cartDiscountAmount">-0 ₺</span>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <span class="text-white-50 small">Genel Toplam:</span>
+          <strong class="fs-5" style="color: var(--cafe-primary);" id="cartTotalAmount">0 ₺</strong>
+        </div>
+
+        <div class="mb-3">
+          <label class="small text-white-50 mb-1">Kupon Kodu</label>
+          <div class="input-group input-group-sm">
+            <input type="text" id="cartCouponInput" class="form-control bg-dark text-white border-secondary text-uppercase" placeholder="Kupon kodunu girin">
+            <button type="submit" id="applyCouponBtn" class="btn btn-outline-cafe">Uygula</button>
+            <button type="button" id="removeCouponBtn" class="btn btn-remove-cart d-none">Kaldır</button>
+          </div>
+          <div id="cartCouponStatus" class="cafe-feedback is-info">
+            <i class="bi bi-ticket-perforated"></i>
+            <span>Çarktan kazandığınız kuponu buraya yapıştırabilirsiniz.</span>
+          </div>
+
+          <!-- Tek Tıkla Kupon Uygulama Kısayolları -->
+          <div class="mt-2 pt-2 border-top border-secondary border-opacity-50">
+            <span class="d-block text-white-50 mb-1" style="font-size: 0.72rem;"><i class="bi bi-stars me-1" style="color: var(--cafe-primary);"></i>Çark &amp; Kampanya Kodları (Tıkla Doldur):</span>
+            <div class="d-flex flex-wrap gap-1">
+              <button type="button" class="btn btn-sm btn-outline-cafe py-0 px-2" style="font-size: 0.7rem;" onclick="document.getElementById('cartCouponInput').value='KAHVE20'; document.getElementById('applyCouponBtn').click();">KAHVE20</button>
+              <button type="button" class="btn btn-sm btn-outline-cafe py-0 px-2" style="font-size: 0.7rem;" onclick="document.getElementById('cartCouponInput').value='CAY25'; document.getElementById('applyCouponBtn').click();">CAY25</button>
+              <button type="button" class="btn btn-sm btn-outline-cafe py-0 px-2" style="font-size: 0.7rem;" onclick="document.getElementById('cartCouponInput').value='TATLI15'; document.getElementById('applyCouponBtn').click();">TATLI15</button>
+              <button type="button" class="btn btn-sm btn-outline-cafe py-0 px-2" style="font-size: 0.7rem;" onclick="document.getElementById('cartCouponInput').value='KURABIYE'; document.getElementById('applyCouponBtn').click();">KURABIYE</button>
+              <button type="button" class="btn btn-sm btn-outline-cafe py-0 px-2" style="font-size: 0.7rem;" onclick="document.getElementById('cartCouponInput').value='EXTRASHOT'; document.getElementById('applyCouponBtn').click();">EXTRASHOT</button>
+              <button type="button" class="btn btn-sm btn-outline-cafe py-0 px-2" style="font-size: 0.7rem;" onclick="document.getElementById('cartCouponInput').value='SURUPFREE'; document.getElementById('applyCouponBtn').click();">SURUPFREE</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="input-group input-group-sm mb-3">
+          <span class="input-group-text bg-dark border-secondary text-white-50">Teslimat</span>
+          <select class="form-select bg-dark border-secondary text-white" id="cartDeliverySelect">
+            <option value="Gel-Al (Paket)">Gel-Al (Paket)</option>
+            <option value="Masa 1 (Pencere Kenarı)">Masa 1 (Pencere Kenarı)</option>
+            <option value="Masa 2 (İç Mekân)">Masa 2 (İç Mekân)</option>
+            <option value="Masa 3 (Bahçe)">Masa 3 (Bahçe)</option>
+            <option value="Masa 4 (Çalışma Alanı)">Masa 4 (Çalışma Alanı)</option>
+          </select>
+        </div>
+
+        <div id="cartAuthNotice" class="cafe-feedback is-warning mb-2 d-none">
+          <i class="bi bi-shield-lock-fill"></i>
+          <span>Sipariş oluşturabilmek için üye girişi yapmanız gerekmektedir.</span>
+        </div>
+
+        <div id="cartOrderWarning" class="d-none mb-2"></div>
+
+        <button type="button" id="completeOrderBtn" class="btn btn-primary w-100 py-2">
+          <i class="bi bi-check2-circle me-1"></i>Siparişi Tamamla
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Dinamik Sipariş Fişi Modalı -->
+  <div class="modal fade" id="orderConfirmedModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content bg-dark text-white border-secondary text-center p-3" style="border-radius: 20px;">
+        <div class="modal-body">
+          <i class="bi bi-check-circle-fill fs-1 mb-2 d-block" style="color: var(--cafe-primary);"></i>
+          <h5 class="fw-normal mb-1">Siparişiniz Alındı!</h5>
+          <p class="small text-white-50 mb-3">Baristalarımız seçiminizi özenle hazırlamaya başladı.</p>
+
+          <div class="order-receipt-card mb-3">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <span class="fw-semibold" style="color: var(--cafe-primary);">BUTİK KAFE · SİPARİŞ FİŞİ</span>
+              <span class="badge bg-dark border border-secondary text-white" id="receiptOrderNo">#BK-1001</span>
+            </div>
+            <div class="text-white-50" style="font-size: 0.74rem;" id="receiptDateTime"></div>
+            <div class="text-white-50" style="font-size: 0.74rem;">Teslimat: <strong class="text-white" id="receiptTable"></strong></div>
+
+            <div class="receipt-dashed-divider"></div>
+
+            <div id="receiptItemsList" class="d-flex flex-column gap-2"></div>
+
+            <div class="receipt-dashed-divider"></div>
+
+            <div id="receiptSubtotalRow" class="d-none justify-content-between text-white-50 mb-1">
+              <span>Ara Toplam</span>
+              <span id="receiptSubtotalVal">0 ₺</span>
+            </div>
+            <div id="receiptDiscountRow" class="d-none justify-content-between text-success mb-1">
+              <span id="receiptDiscountLabel">Kupon İndirimi</span>
+              <span id="receiptDiscountVal">-0 ₺</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center fw-bold fs-6 pt-1">
+              <span>ÖDENEN TOPLAM</span>
+              <span style="color: var(--cafe-primary);" id="receiptTotalVal">0 ₺</span>
+            </div>
+          </div>
+
+          <button type="button" class="btn btn-primary w-100 py-2" data-bs-dismiss="modal">Tamam</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    crossorigin="anonymous"></script>
+
+  <script>
+    const STORAGE_KEYS = {
+      CART: "butik_kafe_cart_v1",
+      COUPON: "butik_kafe_coupon_v1",
+      USER: "butik_kafe_user_v1",
+      REGISTERED_USERS: "butik_kafe_registered_users_v1",
+      TABLE: "butik_kafe_table_v1",
+      WHEEL_PRIZE: "butik_kafe_wheel_prize_v1"
+    };
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const rawRedirect = urlParams.get("redirect");
+    const safeRedirect = (rawRedirect && !rawRedirect.startsWith("http") && !rawRedirect.startsWith("//"))
+      ? rawRedirect
+      : "index.html";
+
+    // Redirect parametresini Giriş Yap bağlantılarına koruyarak aktar
+    const loginSuffix = rawRedirect ? `?redirect=${encodeURIComponent(safeRedirect)}` : "";
+    const toLoginLink = document.getElementById("toLoginLink");
+    const navLoginLink = document.getElementById("navLoginLink");
+    if (toLoginLink) toLoginLink.href = `giris.html${loginSuffix}`;
+    if (navLoginLink) navLoginLink.href = `giris.html${loginSuffix}`;
+
+    function showFeedback(el, type, iconClass, text) {
+      if (!el) return;
+      el.className = `cafe-feedback is-${type}`;
+      el.innerHTML = `<i class="bi ${iconClass}"></i><span>${text}</span>`;
+    }
+
+    function getCurrentUser() {
+      try {
+        return JSON.parse(sessionStorage.getItem(STORAGE_KEYS.USER));
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function updateOrderAuthUI() {
+      const user = getCurrentUser();
+      const authNotice = document.getElementById("cartAuthNotice");
+      const orderBtn = document.getElementById("completeOrderBtn");
+
+      if (!orderBtn) return;
+
+      if (!user) {
+        if (authNotice) authNotice.classList.remove("d-none");
+        orderBtn.classList.remove("btn-primary");
+        orderBtn.classList.add("btn-outline-warning");
+        orderBtn.innerHTML = '<i class="bi bi-lock-fill me-1"></i>Sipariş İçin Giriş Yapın';
+      } else {
+        if (authNotice) authNotice.classList.add("d-none");
+        orderBtn.classList.remove("btn-outline-warning");
+        orderBtn.classList.add("btn-primary");
+        orderBtn.innerHTML = '<i class="bi bi-check2-circle me-1"></i>Siparişi Tamamla';
+      }
+    }
+
+    function renderNavbarUser() {
+      const navAuthArea = document.getElementById("navAuthArea");
+      const alreadyLoggedInBox = document.getElementById("alreadyLoggedInBox");
+      const user = getCurrentUser();
+
+      if (user) {
+        if (navAuthArea) {
+          navAuthArea.innerHTML = `
+            <div class="d-inline-flex align-items-center gap-2">
+              <span class="small text-white-50"><i class="bi bi-person-circle me-1" style="color: var(--cafe-primary);"></i>${user.name}</span>
+              <button type="button" id="logoutBtn" class="btn btn-sm btn-outline-light">Çıkış</button>
+            </div>
+          `;
+          document.getElementById("logoutBtn").addEventListener("click", function () {
+            sessionStorage.removeItem(STORAGE_KEYS.USER);
+            window.location.reload();
+          });
+        }
+        if (alreadyLoggedInBox) {
+          showFeedback(
+            alreadyLoggedInBox,
+            "info",
+            "bi-person-check-fill",
+            `Şu anda <strong>${user.name}</strong> olarak oturum açtınız. <a href="${safeRedirect}" class="auth-link ms-1">Devam Et &rarr;</a>`
+          );
+        }
+      }
+      updateOrderAuthUI();
+    }
+
+    // Şifre görünürlüğü
+    const toggleRegPass = document.getElementById("toggleRegPass");
+    const regPasswordInput = document.getElementById("regPassword");
+    const regPasswordConfirmInput = document.getElementById("regPasswordConfirm");
+
+    if (toggleRegPass && regPasswordInput) {
+      toggleRegPass.addEventListener("click", function () {
+        const isPass = regPasswordInput.type === "password";
+        regPasswordInput.type = isPass ? "text" : "password";
+        if (regPasswordConfirmInput) {
+          regPasswordConfirmInput.type = isPass ? "text" : "password";
+        }
+        this.innerHTML = isPass ? '<i class="bi bi-eye-slash"></i>' : '<i class="bi bi-eye"></i>';
+      });
+    }
+
+    // Kayıt Formu Doğrulama (tarayıcı alert yerine .cafe-feedback kullanır)
+    const registerForm = document.getElementById("registerForm");
+    if (registerForm) {
+      registerForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const firstName = document.getElementById("regFirstName").value.trim();
+        const lastName = document.getElementById("regLastName").value.trim();
+        const email = document.getElementById("regEmail").value.trim().toLowerCase();
+        const phone = document.getElementById("regPhone").value.trim();
+        const pass = regPasswordInput.value;
+        const confirmPass = regPasswordConfirmInput.value;
+        const termsChecked = document.getElementById("termsCheck").checked;
+        const feedbackEl = document.getElementById("registerFeedback");
+
+        if (!firstName || !lastName) {
+          showFeedback(feedbackEl, "warning", "bi-exclamation-triangle-fill", "Lütfen adınızı ve soyadınızı eksiksiz girin.");
+          return;
+        }
+
+        if (!email || !email.includes("@")) {
+          showFeedback(feedbackEl, "warning", "bi-exclamation-triangle-fill", "Lütfen geçerli bir e-posta adresi girin.");
+          return;
+        }
+
+        if (!phone) {
+          showFeedback(feedbackEl, "warning", "bi-exclamation-triangle-fill", "Lütfen telefon numaranızı girin.");
+          return;
+        }
+
+        if (pass.length < 6) {
+          showFeedback(feedbackEl, "warning", "bi-shield-exclamation", "Şifreniz en az 6 karakter uzunluğunda olmalıdır.");
+          regPasswordInput.focus();
+          return;
+        }
+
+        if (pass !== confirmPass) {
+          showFeedback(feedbackEl, "danger", "bi-x-circle-fill", "Girdiğiniz şifreler birbiriyle eşleşmiyor!");
+          regPasswordConfirmInput.focus();
+          return;
+        }
+
+        if (!termsChecked) {
+          showFeedback(feedbackEl, "warning", "bi-check2-square", "Devam etmek için üyelik koşullarını ve gizlilik politikasını onaylamalısınız.");
+          return;
+        }
+
+        const fullName = `${firstName} ${lastName}`;
+
+        let registeredUsers = [];
+        try {
+          registeredUsers = JSON.parse(sessionStorage.getItem(STORAGE_KEYS.REGISTERED_USERS)) || [];
+        } catch (err) {
+          registeredUsers = [];
+        }
+
+        const existingIndex = registeredUsers.findIndex(u => u.email === email);
+        const userRecord = { name: fullName, email, phone, password: pass };
+        if (existingIndex >= 0) {
+          registeredUsers[existingIndex] = userRecord;
+        } else {
+          registeredUsers.push(userRecord);
+        }
+        sessionStorage.setItem(STORAGE_KEYS.REGISTERED_USERS, JSON.stringify(registeredUsers));
+
+        showFeedback(
+          feedbackEl,
+          "success",
+          "bi-check-circle-fill",
+          `Kaydınız tamamlandı, <strong>${fullName}</strong>! Giriş sayfasına yönlendiriliyorsunuz...`
+        );
+
+        const nextParams = new URLSearchParams();
+        nextParams.set("registered", "1");
+        nextParams.set("email", email);
+        if (rawRedirect) {
+          nextParams.set("redirect", safeRedirect);
+        }
+
+        setTimeout(() => {
+          window.location.href = `giris.html?${nextParams.toString()}`;
+        }, 950);
+      });
+    }
+
+    // Gizlilik & Kullanım Şartları Modalı
+    document.querySelectorAll('[data-bs-target="#legalInfoModal"]').forEach(link => {
+      link.addEventListener("click", function (e) {
+        e.preventDefault();
+        const type = this.dataset.legalType;
+        const titleEl = document.getElementById("legalModalTitle");
+        const bodyEl = document.getElementById("legalModalBody");
+        if (type === "privacy") {
+          titleEl.textContent = "Gizlilik Politikası";
+          bodyEl.textContent = "Butik Kafe olarak sipariş, kupon ve hesap bilgileriniz yalnızca size daha iyi hizmet sunmak amacıyla güvenli şekilde saklanır ve üçüncü taraflarla paylaşılmaz.";
+        } else {
+          titleEl.textContent = "Kullanım Şartları";
+          bodyEl.textContent = "Sürpriz Kahve Çarkı kuponları her ziyarette tek kullanımlıktır ve aynı siparişte yalnızca bir kupon kodu aktif edilebilir.";
+        }
+      });
+    });
+
+    // Sepet Senkronizasyonu
+    let cart = [];
+    let activeCouponCode = "";
+    let lastCalculation = { subtotal: 0, discount: 0, finalTotal: 0, couponCode: "" };
+
+    try {
+      const rawCart = JSON.parse(sessionStorage.getItem(STORAGE_KEYS.CART)) || [];
+      rawCart.forEach(item => {
+        const qty = item.qty || 1;
+        const existing = cart.find(c =>
+          c.title === item.title &&
+          (c.desc || "") === (item.desc || "") &&
+          c.price === item.price &&
+          !!c.isGiftCookie === !!item.isGiftCookie
+        );
+        if (existing) {
+          if (!existing.isGiftCookie) existing.qty += qty;
+        } else {
+          cart.push({ ...item, qty: item.isGiftCookie ? 1 : qty });
+        }
+      });
+      activeCouponCode = sessionStorage.getItem(STORAGE_KEYS.COUPON) || "";
+    } catch (e) {
+      cart = [];
+      activeCouponCode = "";
+    }
+
+    const cartBadge = document.getElementById("cartBadgeCount");
+    const cartContainer = document.getElementById("cartItemsContainer");
+    const cartEmptyMsg = document.getElementById("cartEmptyMsg");
+    const cartSubtotalRow = document.getElementById("cartSubtotalRow");
+    const cartSubtotalEl = document.getElementById("cartSubtotalAmount");
+    const cartDiscountRow = document.getElementById("cartDiscountRow");
+    const cartDiscountLabelEl = document.getElementById("cartDiscountLabel");
+    const cartDiscountAmountEl = document.getElementById("cartDiscountAmount");
+    const cartTotalEl = document.getElementById("cartTotalAmount");
+    const cartCouponInput = document.getElementById("cartCouponInput");
+    const cartCouponStatus = document.getElementById("cartCouponStatus");
+    const applyCouponBtn = document.getElementById("applyCouponBtn");
+    const removeCouponBtn = document.getElementById("removeCouponBtn");
+    const completeOrderBtn = document.getElementById("completeOrderBtn");
+    const cartOrderWarning = document.getElementById("cartOrderWarning");
+    const cartDeliverySelect = document.getElementById("cartDeliverySelect");
+
+    const savedTable = sessionStorage.getItem(STORAGE_KEYS.TABLE);
+    if (savedTable && cartDeliverySelect) {
+      cartDeliverySelect.value = savedTable;
+    }
+
+    cartDeliverySelect.addEventListener("change", function () {
+      sessionStorage.setItem(STORAGE_KEYS.TABLE, this.value);
+    });
+
+    function saveCartState() {
+      sessionStorage.setItem(STORAGE_KEYS.CART, JSON.stringify(cart));
+      sessionStorage.setItem(STORAGE_KEYS.COUPON, activeCouponCode);
+    }
+
+    function setCouponButtonState(isApplied) {
+      if (isApplied) {
+        applyCouponBtn.classList.add("d-none");
+        removeCouponBtn.classList.remove("d-none");
+        cartCouponInput.readOnly = true;
+      } else {
+        removeCouponBtn.classList.add("d-none");
+        applyCouponBtn.classList.remove("d-none");
+        cartCouponInput.readOnly = false;
+      }
+    }
+
+    function applyCoupon(code) {
+      const cleanCode = (code || "").trim().toUpperCase();
+
+      if (!cleanCode) {
+        showFeedback(cartCouponStatus, "warning", "bi-exclamation-triangle-fill", "Lütfen önce bir kupon kodu girin.");
+        return;
+      }
+
+      activeCouponCode = cleanCode;
+      cartCouponInput.value = cleanCode;
+      setCouponButtonState(true);
+
+      if (cleanCode === "KURABIYE") {
+        const hasGiftCookie = cart.some(item => item.isGiftCookie);
+        if (!hasGiftCookie) {
+          cart.push({
+            title: "Damla Çikolatalı Cookie (Çark İkramı)",
+            desc: "Ücretsiz Hediye İkram",
+            price: 0,
+            qty: 1,
+            category: "gift",
+            isGiftCookie: true
+          });
+        }
+      } else {
+        for (let i = cart.length - 1; i >= 0; i--) {
+          if (cart[i].isGiftCookie) cart.splice(i, 1);
+        }
+      }
+
+      saveCartState();
+      renderCart();
+    }
+
+    function clearCoupon(customMessage) {
+      activeCouponCode = "";
+      cartCouponInput.value = "";
+      setCouponButtonState(false);
+
+      for (let i = cart.length - 1; i >= 0; i--) {
+        if (cart[i].isGiftCookie) {
+          cart.splice(i, 1);
+        }
+      }
+
+      saveCartState();
+      showFeedback(
+        cartCouponStatus,
+        "info",
+        "bi-ticket-perforated",
+        customMessage || "Kupon kaldırıldı. Yeni bir kupon kodu girebilirsiniz."
+      );
+      renderCart();
+    }
+
+    function renderCart() {
+      const totalItemCount = cart.reduce((sum, item) => sum + (item.qty || 1), 0);
+      cartBadge.textContent = totalItemCount;
+      cartBadge.style.display = totalItemCount > 0 ? "inline-flex" : "none";
+
+      const paidItemsCount = cart
+        .filter(item => !item.isGiftCookie)
+        .reduce((sum, item) => sum + (item.qty || 1), 0);
+
+      if (paidItemsCount > 0 && cartOrderWarning) {
+        cartOrderWarning.className = "d-none";
+      }
+
+      let subtotal = 0;
+      let coffeeTotal = 0;
+      let teaTotal = 0;
+      let dessertTotal = 0;
+      let hasExtraShotInCart = false;
+      let maxSyrupDiscount = 0;
+
+      if (cart.length === 0) {
+        cartContainer.innerHTML = "";
+        cartContainer.appendChild(cartEmptyMsg);
+      } else {
+        cartContainer.innerHTML = cart.map((item, idx) => {
+          const qty = item.qty || 1;
+          const lineTotal = item.price * qty;
+          subtotal += lineTotal;
+
+          if (item.category === "coffee") coffeeTotal += lineTotal;
+          if (item.category === "tea") teaTotal += lineTotal;
+          if (item.category === "dessert" || item.category === "cookie") dessertTotal += lineTotal;
+          if (item.hasExtraShot) hasExtraShotInCart = true;
+          if (item.hasSyrup) {
+            const count = item.syrupCount || 1;
+            maxSyrupDiscount = Math.max(maxSyrupDiscount, count * 15);
+          }
+
+          const controlsHtml = item.isGiftCookie
+            ? `<button type="button" class="btn btn-sm btn-remove-cart py-1 px-2" onclick="removeCartItem(${idx})">
+                 <i class="bi bi-trash3 me-1"></i>Kaldır
+               </button>`
+            : `<div class="d-flex align-items-center gap-1">
+                 <button type="button" class="btn btn-qty-cart rounded" onclick="changeCartQty(${idx}, -1)" aria-label="Azalt">
+                   <i class="bi bi-dash"></i>
+                 </button>
+                 <span class="px-2 small fw-semibold text-white">${qty}</span>
+                 <button type="button" class="btn btn-qty-cart rounded" onclick="changeCartQty(${idx}, 1)" aria-label="Artır">
+                   <i class="bi bi-plus"></i>
+                 </button>
+                 <button type="button" class="btn btn-sm btn-remove-cart py-1 px-2 ms-1" onclick="removeCartItem(${idx})" title="Ürünü Sil">
+                   <i class="bi bi-trash3"></i>
+                 </button>
+               </div>`;
+
+          return `
+            <div class="d-flex justify-content-between align-items-center p-2 mb-2 rounded" style="background-color: #1c1f24; border: 1px solid rgba(255,255,255,0.08);">
+              <div class="pe-2">
+                <div class="fw-medium small text-white">${item.title}</div>
+                ${item.desc ? `<div class="text-white-50" style="font-size: 0.72rem;">${item.desc}</div>` : ""}
+                <div class="text-white-50" style="font-size: 0.78rem;">
+                  ${qty} Adet × <strong style="color: var(--cafe-primary);">${item.price === 0 ? "Ücretsiz" : item.price + " ₺"}</strong>
+                  ${qty > 1 && item.price > 0 ? `<span class="text-white"> = ${lineTotal} ₺</span>` : ""}
+                </div>
+              </div>
+              ${controlsHtml}
+            </div>
+          `;
+        }).join("");
+      }
+
+      let discount = 0;
+      let discountLabel = "";
+      let perkBadgeText = "";
+      let isValidCoupon = false;
+
+      if (activeCouponCode) {
+        cartCouponInput.value = activeCouponCode;
+        setCouponButtonState(true);
+      }
+
+      if (activeCouponCode === "KAHVE20") {
+        isValidCoupon = true;
+        discount = Math.round(coffeeTotal * 0.20);
+        discountLabel = "Kupon (KAHVE20 · %20):";
+        perkBadgeText = discount > 0 ? `-${discount} ₺` : "Kahve bekleniyor";
+        if (coffeeTotal > 0) {
+          showFeedback(cartCouponStatus, "success", "bi-check-circle-fill", `<strong>KAHVE20</strong> uygulandı (-${discount} ₺)`);
+        } else {
+          showFeedback(cartCouponStatus, "warning", "bi-info-circle-fill", `<strong>KAHVE20</strong> aktif! İndirim için menüden kahve ekleyin.`);
+        }
+      } else if (activeCouponCode === "CAY25") {
+        isValidCoupon = true;
+        discount = Math.round(teaTotal * 0.25);
+        discountLabel = "Kupon (CAY25 · %25):";
+        perkBadgeText = discount > 0 ? `-${discount} ₺` : "Bitki çayı bekleniyor";
+        if (teaTotal > 0) {
+          showFeedback(cartCouponStatus, "success", "bi-check-circle-fill", `<strong>CAY25</strong> uygulandı (-${discount} ₺)`);
+        } else {
+          showFeedback(cartCouponStatus, "warning", "bi-info-circle-fill", `<strong>CAY25</strong> aktif! İndirim için menüden bitki çayı ekleyin.`);
+        }
+      } else if (activeCouponCode === "TATLI15") {
+        isValidCoupon = true;
+        discount = Math.round(dessertTotal * 0.15);
+        discountLabel = "Kupon (TATLI15 · %15):";
+        perkBadgeText = discount > 0 ? `-${discount} ₺` : "Tatlı bekleniyor";
+        if (dessertTotal > 0) {
+          showFeedback(cartCouponStatus, "success", "bi-check-circle-fill", `<strong>TATLI15</strong> uygulandı (-${discount} ₺)`);
+        } else {
+          showFeedback(cartCouponStatus, "warning", "bi-info-circle-fill", `<strong>TATLI15</strong> aktif! İndirim için menüden tatlı ekleyin.`);
+        }
+      } else if (activeCouponCode === "KURABIYE") {
+        isValidCoupon = true;
+        discount = 0;
+        discountLabel = "Kupon (KURABIYE):";
+        perkBadgeText = "Ücretsiz Cookie Eklendi";
+        showFeedback(cartCouponStatus, "success", "bi-gift-fill", `<strong>KURABIYE</strong> uygulandı (Taze kurabiye ikramınız sepete eklendi)`);
+      } else if (activeCouponCode === "EXTRASHOT") {
+        isValidCoupon = true;
+        discount = hasExtraShotInCart ? 20 : 0;
+        discountLabel = "Kupon (EXTRASHOT):";
+        perkBadgeText = hasExtraShotInCart ? "-20 ₺ (1 İçecek)" : "Ekstra Shot Seçilmedi";
+        if (hasExtraShotInCart) {
+          showFeedback(cartCouponStatus, "success", "bi-lightning-charge-fill", `<strong>EXTRASHOT</strong> uygulandı (-20 ₺ · 1 içecekte geçerlidir)`);
+        } else {
+          showFeedback(cartCouponStatus, "warning", "bi-info-circle-fill", `<strong>EXTRASHOT</strong> aktif! Barista Atölyesi'nden Ekstra Shot ekleyince 20 ₺ düşer (1 içecekte geçerlidir).`);
+        }
+      } else if (activeCouponCode === "SURUPFREE") {
+        isValidCoupon = true;
+        discount = maxSyrupDiscount;
+        discountLabel = "Kupon (SURUPFREE):";
+        perkBadgeText = discount > 0 ? `-${discount} ₺ (1 İçecek)` : "Şurup Seçilmedi";
+        if (discount > 0) {
+          showFeedback(cartCouponStatus, "success", "bi-droplet-fill", `<strong>SURUPFREE</strong> uygulandı (-${discount} ₺ · 1 içecekte geçerlidir)`);
+        } else {
+          showFeedback(cartCouponStatus, "warning", "bi-info-circle-fill", `<strong>SURUPFREE</strong> aktif! Barista Atölyesi'nden şurup ekleyince şurup bedeli düşer (1 içecekte geçerlidir).`);
+        }
+      } else if (activeCouponCode !== "") {
+        showFeedback(cartCouponStatus, "danger", "bi-x-circle-fill", "Geçersiz kupon kodu girdiniz.");
+      }
+
+      const finalTotal = Math.max(0, subtotal - discount);
+      lastCalculation = {
+        subtotal,
+        discount,
+        finalTotal,
+        couponCode: isValidCoupon ? activeCouponCode : ""
+      };
+
+      if (isValidCoupon) {
+        if (discount > 0) {
+          cartSubtotalRow.classList.remove("d-none");
+          cartSubtotalRow.classList.add("d-flex");
+          cartSubtotalEl.textContent = subtotal + " ₺";
+        } else {
+          cartSubtotalRow.classList.add("d-none");
+          cartSubtotalRow.classList.remove("d-flex");
+        }
+
+        cartDiscountRow.classList.remove("d-none");
+        cartDiscountRow.classList.add("d-flex");
+        cartDiscountLabelEl.textContent = discountLabel;
+        cartDiscountAmountEl.textContent = perkBadgeText;
+      } else {
+        cartSubtotalRow.classList.add("d-none");
+        cartSubtotalRow.classList.remove("d-flex");
+        cartDiscountRow.classList.add("d-none");
+        cartDiscountRow.classList.remove("d-flex");
+      }
+
+      cartTotalEl.textContent = finalTotal + " ₺";
+      updateOrderAuthUI();
+    }
+
+    function populateOrderReceipt(itemsSnapshot, calcSnapshot, selectedDelivery) {
+      const randomOrderNum = Math.floor(1000 + Math.random() * 9000);
+      const now = new Date();
+      const dateStr = now.toLocaleDateString("tr-TR");
+      const timeStr = now.toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" });
+
+      document.getElementById("receiptOrderNo").textContent = `#BK-${randomOrderNum}`;
+      document.getElementById("receiptDateTime").textContent = `Tarih: ${dateStr} · ${timeStr}`;
+      document.getElementById("receiptTable").textContent = selectedDelivery;
+
+      document.getElementById("receiptItemsList").innerHTML = itemsSnapshot.map(item => {
+        const qty = item.qty || 1;
+        const lineTotal = item.price * qty;
+        return `
+          <div class="d-flex justify-content-between align-items-start">
+            <div class="pe-2">
+              <div class="text-white">${qty}x ${item.title}</div>
+              ${item.desc ? `<div class="text-white-50" style="font-size: 0.72rem;">${item.desc}</div>` : ""}
+            </div>
+            <span class="text-nowrap fw-medium ${item.price === 0 ? "text-success" : "text-white"}">
+              ${item.price === 0 ? "Ücretsiz" : lineTotal + " ₺"}
+            </span>
+          </div>
+        `;
+      }).join("");
+
+      const subRow = document.getElementById("receiptSubtotalRow");
+      const discRow = document.getElementById("receiptDiscountRow");
+
+      if (calcSnapshot.discount > 0) {
+        subRow.classList.remove("d-none");
+        subRow.classList.add("d-flex");
+        document.getElementById("receiptSubtotalVal").textContent = calcSnapshot.subtotal + " ₺";
+
+        discRow.classList.remove("d-none");
+        discRow.classList.add("d-flex");
+        document.getElementById("receiptDiscountLabel").textContent = `Kupon İndirimi (${calcSnapshot.couponCode})`;
+        document.getElementById("receiptDiscountVal").textContent = `-${calcSnapshot.discount} ₺`;
+      } else {
+        subRow.classList.add("d-none");
+        subRow.classList.remove("d-flex");
+        discRow.classList.add("d-none");
+        discRow.classList.remove("d-flex");
+      }
+
+      document.getElementById("receiptTotalVal").textContent = calcSnapshot.finalTotal + " ₺";
+    }
+
+    applyCouponBtn.addEventListener("click", function () {
+      applyCoupon(cartCouponInput.value);
+    });
+
+    removeCouponBtn.addEventListener("click", function () {
+      clearCoupon();
+    });
+
+    completeOrderBtn.addEventListener("click", function () {
+      const currentUser = getCurrentUser();
+      if (!currentUser) {
+        showFeedback(
+          cartOrderWarning,
+          "warning",
+          "bi-arrow-down-circle-fill",
+          `Sipariş oluşturabilmek için önce üyeliğinizi tamamlayıp giriş yapmalısınız.`
+        );
+
+        const cartOffcanvasEl = document.getElementById("cafeCartOffcanvas");
+        const cartOffcanvas = bootstrap.Offcanvas.getInstance(cartOffcanvasEl);
+        if (cartOffcanvas) {
+          cartOffcanvas.hide();
+        }
+
+        setTimeout(() => {
+          const firstNameInput = document.getElementById("regFirstName");
+          if (firstNameInput) {
+            firstNameInput.focus();
+            firstNameInput.scrollIntoView({ behavior: "smooth", block: "center" });
+          }
+        }, 350);
+        return;
+      }
+
+      const paidItemsCount = cart
+        .filter(item => !item.isGiftCookie)
+        .reduce((sum, item) => sum + (item.qty || 1), 0);
+
+      if (cart.length === 0) {
+        showFeedback(cartOrderWarning, "warning", "bi-exclamation-triangle-fill", "Sipariş vermek için önce menüden sepete ürün ekleyin.");
+        return;
+      }
+
+      if (paidItemsCount === 0) {
+        showFeedback(cartOrderWarning, "warning", "bi-exclamation-triangle-fill", "Ücretsiz kurabiye ikramını kullanmak için sepete en az 1 ürün ekleyin.");
+        return;
+      }
+
+      cartOrderWarning.className = "d-none";
+
+      populateOrderReceipt([...cart], { ...lastCalculation }, cartDeliverySelect.value);
+
+      cart.length = 0;
+      activeCouponCode = "";
+      saveCartState();
+
+      cartCouponInput.value = "";
+      setCouponButtonState(false);
+      showFeedback(cartCouponStatus, "info", "bi-ticket-perforated", "Çarktan kazandığınız kuponu buraya yapıştırabilirsiniz.");
+      renderCart();
+
+      const offcanvasEl = document.getElementById("cafeCartOffcanvas");
+      const offcanvasInstance = bootstrap.Offcanvas.getInstance(offcanvasEl);
+      if (offcanvasInstance) {
+        offcanvasInstance.hide();
+      }
+
+      const confirmedModal = new bootstrap.Modal(document.getElementById("orderConfirmedModal"));
+      confirmedModal.show();
+    });
+
+    window.changeCartQty = function (index, delta) {
+      const item = cart[index];
+      if (!item || item.isGiftCookie) return;
+
+      const nextQty = (item.qty || 1) + delta;
+      if (nextQty <= 0) {
+        window.removeCartItem(index);
+        return;
+      }
+
+      item.qty = nextQty;
+      saveCartState();
+      renderCart();
+    };
+
+    window.removeCartItem = function (index) {
+      const removedItem = cart[index];
+      cart.splice(index, 1);
+
+      if (removedItem && removedItem.isGiftCookie) {
+        clearCoupon();
+        return;
+      }
+
+      const remainingPaidCount = cart.filter(item => !item.isGiftCookie).length;
+      if (remainingPaidCount === 0 && activeCouponCode !== "") {
+        clearCoupon("Sepetteki ürünler silindiği için aktif kupon sıfırlandı.");
+        return;
+      }
+
+      saveCartState();
+      renderCart();
+    };
+
+    // Sürpriz Kahve Çarkı
+    (function () {
+      const prizes = [
+        { title: "Tatlıda %15 İndirim", code: "TATLI15", angle: 0 },
+        { title: "Ücretsiz Ekstra Shot", code: "EXTRASHOT", angle: 300 },
+        { title: "Taze Kurabiye İkramı", code: "KURABIYE", angle: 240 },
+        { title: "Kahvede %20 İndirim", code: "KAHVE20", angle: 180 },
+        { title: "Çaylarda %25 İndirim", code: "CAY25", angle: 120 },
+        { title: "Ücretsiz Şurup Aroması", code: "SURUPFREE", angle: 60 }
+      ];
+
+      const spinBtn = document.getElementById("spinWheelBtn");
+      const wheelDisc = document.getElementById("coffeeWheelDisc");
+      const couponBox = document.getElementById("wheelCouponBox");
+      let hasSpun = false;
+
+      function renderWonPrize(selectedPrize, instant) {
+        hasSpun = true;
+        spinBtn.disabled = true;
+        spinBtn.classList.remove("btn-primary");
+        spinBtn.classList.add("btn-secondary");
+        spinBtn.innerHTML = '<i class="bi bi-check-circle-fill me-1"></i>Ödülünüz Tanımlandı';
+
+        if (instant) {
+          wheelDisc.style.transition = "none";
+          wheelDisc.style.transform = `rotate(${1800 + selectedPrize.angle}deg)`;
+        }
+
+        couponBox.innerHTML = `
+          <div class="prize-reveal-anim w-100">
+            <div class="small text-white-50 mb-1">Tebrikler! Kazandığınız Ödül:</div>
+            <h5 class="fw-semibold mb-2" style="color: var(--cafe-primary);">${selectedPrize.title}</h5>
+            <div class="d-inline-flex flex-wrap justify-content-center align-items-center gap-2">
+              <code class="px-3 py-1 rounded bg-dark text-white border border-secondary fs-6 user-select-all">${selectedPrize.code}</code>
+              <button type="button" id="wheelCopyBtn" class="btn btn-sm btn-outline-light">
+                <i class="bi bi-clipboard me-1"></i>Kopyala
+              </button>
+              <button type="button" id="wheelApplyToCartBtn" class="btn btn-sm btn-primary">
+                <i class="bi bi-bag-check me-1"></i>Sepete Uygula
+              </button>
+            </div>
+            <div id="wheelActionFeedback" class="d-none"></div>
+          </div>
+        `;
+
+        const copyBtn = document.getElementById("wheelCopyBtn");
+        const applyBtn = document.getElementById("wheelApplyToCartBtn");
+        const feedbackEl = document.getElementById("wheelActionFeedback");
+
+        copyBtn.addEventListener("click", function () {
+          if (navigator.clipboard) {
+            navigator.clipboard.writeText(selectedPrize.code);
+          }
+          copyBtn.innerHTML = '<i class="bi bi-clipboard-check-fill me-1"></i>Kopyalandı';
+          showFeedback(feedbackEl, "success", "bi-check-circle-fill", `<strong>${selectedPrize.code}</strong> panoya kopyalandı!`);
+        });
+
+        applyBtn.addEventListener("click", function () {
+          applyCoupon(selectedPrize.code);
+          showFeedback(feedbackEl, "success", "bi-bag-check-fill", `<strong>${selectedPrize.code}</strong> kuponu sepetinize uygulandı!`);
+        });
+      }
+
+      try {
+        const savedPrize = JSON.parse(sessionStorage.getItem(STORAGE_KEYS.WHEEL_PRIZE));
+        if (savedPrize && savedPrize.code) {
+          renderWonPrize(savedPrize, true);
+        }
+      } catch (e) {}
+
+      spinBtn.addEventListener("click", function () {
+        if (hasSpun) return;
+        hasSpun = true;
+
+        const randomIndex = Math.floor(Math.random() * prizes.length);
+        const selectedPrize = prizes[randomIndex];
+
+        spinBtn.disabled = true;
+        spinBtn.classList.remove("btn-primary");
+        spinBtn.classList.add("btn-secondary");
+        spinBtn.innerHTML = '<i class="bi bi-hourglass-split me-1"></i>Çark Dönüyor...';
+
+        const totalRotation = 1800 + selectedPrize.angle;
+        wheelDisc.style.transform = `rotate(${totalRotation}deg)`;
+
+        setTimeout(function () {
+          sessionStorage.setItem(STORAGE_KEYS.WHEEL_PRIZE, JSON.stringify(selectedPrize));
+          renderWonPrize(selectedPrize, false);
+        }, 3550);
+      });
+    })();
+
+    renderNavbarUser();
+    renderCart();
+  </script>
+</body>
+
+</html>
